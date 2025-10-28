@@ -1,0 +1,22 @@
+﻿<h3>Security Question</h3>
+
+@if (ViewBag.Error != null)
+
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+
+}
+
+<form asp-action="SecurityQuestion" method="post">
+
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="email" value="@ViewBag.Email" />
+
+    <div class="mb-3">
+        <label><strong>@ViewBag.Question</strong></label>
+        <input name="answer" class="form-control" required />
+    </div>
+
+    <button class="btn btn-primary">Submit Answer</button>
+</form>
+

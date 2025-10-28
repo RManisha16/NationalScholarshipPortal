@@ -1,0 +1,227 @@
+﻿@model NScholarshipP.Models.StudentApplication
+
+@{
+    ViewData["Title"] = "Application Details";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e3f2fd, #f5faff);
+        font-family: "Poppins", sans-serif;
+    }
+
+    .details-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-top: 40px;
+    }
+
+    h3 {
+        font-weight: 700;
+        color: #1565c0;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    h5 {
+        margin-top: 30px;
+        color: #0d47a1;
+        font-weight: 600;
+        border-left: 5px solid #64b5f6;
+        padding-left: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    th {
+        width: 30%;
+        background: linear-gradient(135deg, #1565c0);
+        color: #fff;
+        font-weight: 600;
+        padding: 10px;
+    }
+
+    td {
+        background-color: #f8fbff;
+        padding: 10px 15px;
+    }
+
+    ul {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 20px;
+        list-style: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        ul a {
+            color: #1565c0;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+            ul a:hover {
+                text-decoration: underline;
+            }
+
+    .btn-back {
+        border-radius: 30px;
+        background: linear-gradient(135deg, #1565c0, #42a5f5);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 10px 20px;
+        margin-top: 20px;
+    }
+
+        .btn-back:hover {
+            background: linear-gradient(135deg, #0d47a1, #1e88e5);
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+        }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+</style>
+
+<div class="container">
+    <div class="details-card">
+        <h3>Application Details</h3>
+        @if (Model.Status == "Approved")
+        {
+            <div class="alert alert-success text-center" style="margin-top: 20px; font-weight: 500; font-size: 16px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1);">
+                Your Application has been approved. Your Scholarship amount will be credited to your registered Bank account within a week.
+            </div>
+        }
+        <a asp-action="MyApplications" class="btn btn-back">← Back to My Applications</a>
+
+        <!-- BASIC DETAILS -->
+        <h5>Basic Information</h5>
+        <table class="table table-bordered">
+            <tr><th>Student Name</th><td>@Model.StudentName</td></tr>
+            <tr><th>Email</th><td>@Model.Email</td></tr>
+            <tr><th>Gender</th><td>@Model.Gender</td></tr>
+            <tr><th>Date of Birth</th><td>@Model.DateOfBirth?.ToString("dd-MM-yyyy")</td></tr>
+            <tr><th>Mobile Number</th><td>@Model.MobileNumber</td></tr>
+            <tr><th>Aadhar Number</th><td>@Model.AadharNumber</td></tr>
+            <tr><th>Status</th><td>@Model.Status</td></tr>
+            <tr><th>Date Submitted</th><td>@Model.DateSubmitted?.ToString("dd-MMM-yyyy")</td></tr>
+        </table>
+
+        <!-- ACADEMIC DETAILS -->
+        <h5>Academic Details</h5>
+        <table class="table table-bordered">
+            <tr><th>Institute Name</th><td>@Model.InstituteName</td></tr>
+            <tr><th>Institute Code</th><td>@Model.InstituteCode</td></tr>
+            <tr><th>Present Course</th><td>@Model.PresentCourse</td></tr>
+            <tr><th>Course Year</th><td>@Model.PresentCourseYear</td></tr>
+            <tr><th>University / Board</th><td>@Model.UniversityOrBoardName</td></tr>
+            <tr><th>Previous Class Percentage</th><td>@Model.PreviousClassPercentage</td></tr>
+            <tr><th>10th Roll Number</th><td>@Model.X_RollNumber</td></tr>
+            <tr><th>10th Board Name</th><td>@Model.X_BoardName</td></tr>
+            <tr><th>10th Passing Year</th><td>@Model.X_PassingYear</td></tr>
+            <tr><th>10th Percentage</th><td>@Model.X_Percentage</td></tr>
+            <tr><th>12th Roll Number</th><td>@Model.XII_RollNumber</td></tr>
+            <tr><th>12th Board Name</th><td>@Model.XII_BoardName</td></tr>
+            <tr><th>12th Passing Year</th><td>@Model.XII_PassingYear</td></tr>
+            <tr><th>12th Percentage</th><td>@Model.XII_Percentage</td></tr>
+        </table>
+
+        <!-- FEE DETAILS -->
+        <h5>Fee Details</h5>
+        <table class="table table-bordered">
+            <tr><th>Admission Fee</th><td>@Model.AdmissionFee</td></tr>
+            <tr><th>Tuition Fee</th><td>@Model.TuitionFee</td></tr>
+            <tr><th>Other Fee</th><td>@Model.OtherFee</td></tr>
+        </table>
+
+        <!-- FAMILY DETAILS -->
+        <h5>Family Information</h5>
+        <table class="table table-bordered">
+            <tr><th>Father Name</th><td>@Model.FatherName</td></tr>
+            <tr><th>Mother Name</th><td>@Model.MotherName</td></tr>
+            <tr><th>Guardian Name</th><td>@Model.GuardianName</td></tr>
+            <tr><th>Family Annual Income</th><td>@Model.FamilyAnnualIncome</td></tr>
+            <tr><th>Parent's Profession</th><td>@Model.ParentsProfession</td></tr>
+            <tr><th>No of Siblings</th><td>@Model.NoOfSiblings</td></tr>
+            <tr><th>Is Disabled</th><td>@(Model.IsDisabled == true ? "Yes" : "No")</td></tr>
+            <tr><th>Disability Type</th><td>@Model.DisabilityType</td></tr>
+            <tr><th>Disability Percentage</th><td>@Model.DisabilityPercent</td></tr>
+            <tr><th>Marital Status</th><td>@Model.MaritalStatus</td></tr>
+        </table>
+
+        <!-- BANK DETAILS -->
+        <h5>Bank Details</h5>
+        <table class="table table-bordered">
+            <tr><th>Bank Name</th><td>@Model.BankName</td></tr>
+            <tr><th>IFSC Code</th><td>@Model.IFSCCode</td></tr>
+            <tr><th>Account Number</th><td>@Model.BankAccount</td></tr>
+        </table>
+
+        <!-- DOCUMENTS -->
+        <h5>Uploaded Documents</h5>
+        <ul>
+            @if (!string.IsNullOrEmpty(Model.PhotoPath))
+            {
+                <li><a href="@Model.PhotoPath" target="_blank">Student Photo</a></li>
+            }
+            @if (!string.IsNullOrEmpty(Model.InstituteIdCardPath))
+            {
+                <li><a href="@Model.InstituteIdCardPath" target="_blank">Institute ID Card</a></li>
+            }
+            @if (!string.IsNullOrEmpty(Model.CasteIncomeCertificatePath))
+            {
+                <li><a href="@Model.CasteIncomeCertificatePath" target="_blank">Caste/Income Certificate</a></li>
+            }
+            @if (!string.IsNullOrEmpty(Model.PreviousMarksheetPath))
+            {
+                <li><a href="@Model.PreviousMarksheetPath" target="_blank">Previous Marksheet</a></li>
+            }
+            @if (!string.IsNullOrEmpty(Model.FeeReceiptPath))
+            {
+                <li><a href="@Model.FeeReceiptPath" target="_blank">Fee Receipt</a></li>
+            }
+            @if (!string.IsNullOrEmpty(Model.BankPassbookPath))
+            {
+                <li><a href="@Model.BankPassbookPath" target="_blank">Bank Passbook</a></li>
+            }
+            @if (!string.IsNullOrEmpty(Model.AadharPath))
+            {
+                <li><a href="@Model.AadharPath" target="_blank">Aadhar Card</a></li>
+            }
+            @if (!string.IsNullOrEmpty(Model.XMarksheetPath))
+            {
+                <li><a href="@Model.XMarksheetPath" target="_blank">10th Marksheet</a></li>
+            }
+            @if (!string.IsNullOrEmpty(Model.XIIMarksheetPath))
+            {
+                <li><a href="@Model.XIIMarksheetPath" target="_blank">12th Marksheet</a></li>
+            }
+            @if (!string.IsNullOrEmpty(Model.BonafideCertificatePath))
+            {
+                <li><a href="@Model.BonafideCertificatePath" target="_blank">Bonafide Certificate</a></li>
+            }
+        </ul>
+    </div>
+</div>

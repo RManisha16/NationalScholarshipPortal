@@ -1,0 +1,271 @@
+﻿@model NScholarshipP.Models.StudentApplication
+
+@{
+    ViewData["Title"] = "Apply – Scholarship";
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    /* Card style for form */
+    .form-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 30px;
+        margin-top: 30px;
+    }
+
+    /* Step navigation pills */
+    #steps .nav-link {
+        border-radius: 50px;
+        margin: 5px;
+        padding: 8px 18px;
+        font-weight: 500;
+        color: #555;
+        background-color: #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+        #steps .nav-link.active {
+            background-color: #0d6efd;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        #steps .nav-link.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+    /* Section headings */
+    .step h5 {
+        color: #0d6efd;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .step h6 {
+        color: #495057;
+        font-weight: 500;
+        margin-top: 20px;
+    }
+
+    /* Inputs styling */
+    .form-control, .form-select {
+        border-radius: 8px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        padding: 10px;
+    }
+
+    /* File inputs */
+    input[type="file"] {
+        padding: 5px;
+    }
+
+    /* Buttons */
+    .btn {
+        border-radius: 8px;
+        padding: 8px 25px;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+
+    .btn-success {
+        background-color: #198754;
+        border: none;
+    }
+
+        .btn-success:hover {
+            background-color: #157347;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5c636a;
+        }
+
+</style>
+
+<div class="container">
+    <div class="form-card">
+        <h3 class="text-center mb-4">@Model.SchemeName Scholarship Application</h3>
+
+        <form asp-action="Apply" asp-controller="Student" method="post" enctype="multipart/form-data" id="appForm">
+
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="SchemeName" />
+
+            <!-- STEP INDICATORS -->
+            <ul class="nav nav-pills justify-content-center mb-4 flex-wrap" id="steps">
+                <li class="nav-item"><a class="nav-link active" id="step1tab">1 – Basic Details</a></li>
+                <li class="nav-item"><a class="nav-link disabled" id="step2tab">2 – Academic Details</a></li>
+                <li class="nav-item"><a class="nav-link disabled" id="step3tab">3 – Fee & Bank</a></li>
+                <li class="nav-item"><a class="nav-link disabled" id="step4tab">4 – Disability Details</a></li>
+                <li class="nav-item"><a class="nav-link disabled" id="step5tab">5 – Uploads & Submit</a></li>
+            </ul>
+
+            <!-- STEP 1 -->
+            <div class="step" id="step1">
+                <h5>Basic / Personal Details</h5>
+                <div class="row g-3">
+                    <div class="col-md-6"><label>Full Name</label><input asp-for="StudentName" class="form-control" /></div>
+                    <div class="col-md-6"><label>Email</label><input asp-for="Email" class="form-control" readonly /></div>
+                    <div class="col-md-6"><label>Mobile Number</label><input asp-for="MobileNumber" class="form-control" /></div>
+                    <div class="col-md-6"><label>Aadhar Number</label><input asp-for="AadharNumber" class="form-control" /></div>
+                    <div class="col-md-6">
+                        <label>Gender</label>
+                        <select asp-for="Gender" class="form-select">
+                            <option value="">-- Select --</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label>Date of Birth</label><input asp-for="DateOfBirth" type="date" class="form-control" /></div>
+                    <div class="col-md-6"><label>Father Name</label><input asp-for="FatherName" class="form-control" /></div>
+                    <div class="col-md-6"><label>Mother Name</label><input asp-for="MotherName" class="form-control" /></div>
+                    <div class="col-md-6"><label>Family Annual Income</label><input asp-for="FamilyAnnualIncome" class="form-control" /></div>
+                    <div class="col-md-6"><label>Guardian Name</label><input asp-for="GuardianName" class="form-control" /></div>
+                    <div class="col-md-6"><label>Parent Profession</label><input asp-for="ParentsProfession" class="form-control" /></div>
+                    <div class="col-md-6"><label>No of Siblings</label><input asp-for="NoOfSiblings" class="form-control" /></div>
+                </div>
+                <div class="text-end mt-3">
+                    <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next →</button>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="step d-none" id="step2">
+                <h5>Academic Details</h5>
+                <div class="row g-3">
+                    <div class="col-md-6"><label>Institute Name</label><input asp-for="InstituteName" class="form-control" /></div>
+                    <div class="col-md-6"><label>Institute Code</label><input asp-for="InstituteCode" class="form-control" /></div>
+                    <div class="col-md-6"><label>Present Course</label><input asp-for="PresentCourse" class="form-control" /></div>
+                    <div class="col-md-6"><label>Present Year</label><input asp-for="PresentCourseYear" class="form-control" /></div>
+                    <div class="col-md-6"><label>University/Board</label><input asp-for="UniversityOrBoardName" class="form-control" /></div>
+                    <div class="col-md-6"><label>Previous Class %</label><input asp-for="PreviousClassPercentage" class="form-control" /></div>
+                    <div class="col-md-6"><label>Course</label><input asp-for="Course" class="form-control" /></div>
+
+                    <h6>10th Details</h6>
+                    <div class="col-md-6"><label>Roll Number</label><input asp-for="X_RollNumber" class="form-control" /></div>
+                    <div class="col-md-6"><label>Board Name</label><input asp-for="X_BoardName" class="form-control" /></div>
+                    <div class="col-md-6"><label>Passing Year</label><input asp-for="X_PassingYear" class="form-control" /></div>
+                    <div class="col-md-6"><label>Percentage</label><input asp-for="X_Percentage" class="form-control" /></div>
+
+                    <h6>12th/Diploma Details</h6>
+                    <div class="col-md-6"><label>Roll Number</label><input asp-for="XII_RollNumber" class="form-control" /></div>
+                    <div class="col-md-6"><label>Board Name</label><input asp-for="XII_BoardName" class="form-control" /></div>
+                    <div class="col-md-6"><label>Passing Year</label><input asp-for="XII_PassingYear" class="form-control" /></div>
+                    <div class="col-md-6"><label>Percentage</label><input asp-for="XII_Percentage" class="form-control" /></div>
+
+                    <input asp-for="SchemeName" type="hidden" />
+                    <input asp-for="Scholarship" type="hidden" />
+                </div>
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(1)">← Previous</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next →</button>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="step d-none" id="step3">
+                <h5>Fee & Bank Details</h5>
+                <div class="row g-3">
+                    <h6>Fee Details</h6>
+                    <div class="col-md-4"><input asp-for="AdmissionFee" class="form-control" placeholder="Admission Fee" /></div>
+                    <div class="col-md-4"><input asp-for="TuitionFee" class="form-control" placeholder="Tuition Fee" /></div>
+                    <div class="col-md-4"><input asp-for="OtherFee" class="form-control" placeholder="Other Fee" /></div>
+
+                    <h6>Bank Details</h6>
+                    <div class="col-md-4"><input asp-for="BankName" class="form-control" placeholder="Bank Name" /></div>
+                    <div class="col-md-4"><input asp-for="IFSCCode" class="form-control" placeholder="IFSC Code" /></div>
+                    <div class="col-md-4"><input asp-for="BankAccount" class="form-control" placeholder="Account No" /></div>
+                </div>
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(2)">← Previous</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep(4)">Next →</button>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="step d-none" id="step4">
+                <h5>Disability / Other Personal Information</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label>Is Disabled</label>
+                        <select asp-for="IsDisabled" class="form-select">
+                            <option value="">-- Select --</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label>Disability Percent</label><input asp-for="DisabilityPercent" class="form-control" /></div>
+                    <div class="col-md-6"><label>Disability Type</label><input asp-for="DisabilityType" class="form-control" /></div>
+                    <div class="col-md-6"><label>Marital Status</label><input asp-for="MaritalStatus" class="form-control" /></div>
+                </div>
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(3)">← Previous</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep(5)">Next →</button>
+                </div>
+            </div>
+
+            <!-- STEP 5 -->
+            <div class="step d-none" id="step5">
+                <h5>Upload Documents & Submit</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label>Photo</label><input type="file" name="Photo" class="form-control" /><input type="hidden" name="PhotoPath" value="@Model.PhotoPath" />
+                    </div>
+                    <div class="col-md-4"><label>Institute ID Card</label><input type="file" name="InstituteIdCard" class="form-control" accept=".jpg,.jpeg,.png,.pdf" /></div>
+                    <div class="col-md-4"><label>Caste/Income Certificate</label><input type="file" name="CasteIncomeCertificate" class="form-control" accept=".jpg,.jpeg,.png,.pdf" /></div>
+                    <div class="col-md-4"><label>Previous Marksheet</label><input type="file" name="PreviousMarksheet" class="form-control" accept=".jpg,.jpeg,.png,.pdf" /></div>
+                    <div class="col-md-4"><label>Fee Receipt</label><input type="file" name="FeeReceipt" class="form-control" accept=".jpg,.jpeg,.png,.pdf" /></div>
+                    <div class="col-md-4"><label>Bank Passbook</label><input type="file" name="BankPassbook" class="form-control" accept=".jpg,.jpeg,.png,.pdf" /></div>
+                    <div class="col-md-4"><label>Aadhar Card</label><input type="file" name="AadharCard" class="form-control" accept=".jpg,.jpeg,.png,.pdf" /></div>
+                    <div class="col-md-4"><label>10th Marksheet</label><input type="file" name="XMarksheet" class="form-control" accept=".jpg,.jpeg,.png,.pdf" /></div>
+                    <div class="col-md-4"><label>12th Marksheet</label><input type="file" name="XIIMarksheet" class="form-control" accept=".jpg,.jpeg,.png,.pdf" /></div>
+                </div>
+
+                <div class="form-check mt-3 mb-3">
+                    <input type="checkbox" class="form-check-input" id="confirm" required />
+                    <label class="form-check-label" for="confirm">
+                        I confirm all information furnished by me is correct.
+                    </label>
+                </div>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(4)">← Previous</button>
+                    <button type="submit" class="btn btn-success">Submit Application</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    function nextStep(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.add('d-none'));
+        document.getElementById('step' + n).classList.remove('d-none');
+        document.querySelectorAll('#steps .nav-link').forEach(l => l.classList.add('disabled'));
+        document.getElementById('step' + n + 'tab').classList.remove('disabled');
+        document.getElementById('step' + n + 'tab').classList.add('active');
+    }
+
+    function prevStep(n) {
+        nextStep(n);
+    }
+
+</script>

@@ -1,0 +1,163 @@
+﻿@model IEnumerable<NScholarshipP.Models.StudentApplication>
+@{
+    ViewData["Title"] = "Student Applications - Ministry";
+}
+<style>
+    body {
+        background: linear-gradient(135deg, #e3f2fd, #f5faff);
+        font-family: "Poppins", sans-serif;
+        min-height: 100vh;
+    }
+
+    h3 {
+        font-weight: 700;
+        color: #0d47a1;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-buttons a {
+        border-radius: 50px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin-right: 8px;
+        padding: 8px 18px;
+    }
+
+        .filter-buttons a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+    .btn-light {
+        border-radius: 30px;
+        font-weight: 500;
+    }
+
+    table {
+        border-radius: 15px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    th {
+        background: linear-gradient(135deg, #1565c0);
+        color: white !important;
+        font-weight: 600;
+    }
+
+    tbody tr:hover {
+        background-color: #e3f2fd;
+    }
+
+    .badge {
+        font-size: 0.9rem;
+        border-radius: 10px;
+        padding: 6px 12px;
+    }
+
+    .btn-outline-dark {
+        border-radius: 25px;
+    }
+
+        .btn-outline-dark:hover {
+            background-color: #1565c0;
+            color: white;
+        }
+
+    .alert {
+        border-radius: 12px;
+        font-weight: 500;
+    }
+</style>
+
+<div class="container py-4">
+    <h3 class="text-center mb-4">Student Applications (Ministry) (@(Model?.Count() ?? 0))</h3>
+
+    <div class="d-flex justify-content-between mb-4 align-items-center">
+        <a asp-action="Dashboard" class="btn btn-light shadow-sm">
+            ← Back to Dashboard
+        </a>
+
+        <div class="filter-buttons">
+            <a asp-action="StudentApplications" asp-route-filter="all"
+               class="btn @(ViewBag.CurrentFilter == "all" ? "btn-secondary text-white" : "btn-outline-secondary") fw-bold">
+                All
+            </a>
+            <a asp-action="StudentApplications" asp-route-filter="pending"
+               class="btn @(ViewBag.CurrentFilter == "pending" ? "btn-primary text-white" : "btn-outline-primary") fw-bold">
+                Pending
+            </a>
+            <a asp-action="StudentApplications" asp-route-filter="approved"
+               class="btn @(ViewBag.CurrentFilter == "approved" ? "btn-info text-white" : "btn-outline-info") fw-bold">
+                Approved
+            </a>
+            <a asp-action="StudentApplications" asp-route-filter="rejected"
+               class="btn @(ViewBag.CurrentFilter == "rejected" ? "btn-danger text-white" : "btn-outline-danger") fw-bold">
+                Rejected
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-hover text-center align-middle">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Student Name</th>
+                <th>Institute</th>
+                <th>Scholarship</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No student applications found.</td>
+                </tr>
+            }
+            else
+            {
+                var i = 1;
+                foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@s.StudentName</td>
+                        <td>@s.InstituteName</td>
+                        <td>@s.Scholarship</td>
+                        <td>
+                            @switch (s.Status)
+                            {
+                                case "Pending":
+                                case "VerifiedByInstitute":
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                    ; break;
+                                case "ApprovedByState":
+                                    <span class="badge bg-success">Approved</span>
+                                    ; break;
+                                case "ForwardedToMinistry":
+                                    <span class="badge bg-info text-dark">Forwarded</span>
+                                    ; break;
+                                case "RejectedByState":
+                                    <span class="badge bg-danger">Rejected</span>
+                                    ; break;
+                                default:
+                                    <span class="badge bg-secondary">@s.Status</span>
+                                    ; break;
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="StudentDetails" asp-route-id="@s.Id" class="btn btn-sm btn-outline-dark px-3">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>

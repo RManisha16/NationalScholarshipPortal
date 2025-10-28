@@ -1,0 +1,238 @@
+﻿@model NScholarshipP.Models.ContactMessage
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="contact-wrapper py-5">
+    <div class="container">
+        <div class="row g-4 align-items-stretch">
+
+            <!-- LEFT SIDE: Contact Form -->
+            <div class="col-lg-6 col-md-12">
+                <div class="card contact-card shadow-lg border-0 rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h2 class="fw-bold text-success mb-2">Get in Touch</h2>
+                        <p class="text-muted mb-4">We’d love to hear from you! Fill in the form below and our team will respond as soon as possible.</p>
+
+                        @if (TempData["ContactSuccess"] != null)
+                        {
+                            <div class="alert alert-success">
+                                @TempData["ContactSuccess"]
+                            </div>
+                        }
+
+                        <form asp-action="Contact" method="post" novalidate>
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                            <div class="mb-3">
+                                <label asp-for="Name" class="form-label fw-semibold">
+                                    <i class="bi bi-person-fill me-1 text-success"></i>Name
+                                </label>
+                                <input asp-for="Name" class="form-control rounded-3 shadow-sm" placeholder="Enter your name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Email" class="form-label fw-semibold">
+                                        <i class="bi bi-envelope-fill me-1 text-success"></i>Email
+                                    </label>
+                                    <input asp-for="Email" class="form-control rounded-3 shadow-sm" placeholder="Enter your email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Phone" class="form-label fw-semibold">
+                                        <i class="bi bi-telephone-fill me-1 text-success"></i>Phone
+                                    </label>
+                                    <input asp-for="Phone" class="form-control rounded-3 shadow-sm" placeholder="Enter your phone number" />
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Subject" class="form-label fw-semibold">
+                                    <i class="bi bi-chat-left-dots-fill me-1 text-success"></i>Subject
+                                </label>
+                                <input asp-for="Subject" class="form-control rounded-3 shadow-sm" placeholder="Subject" />
+                                <span asp-validation-for="Subject" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Message" class="form-label fw-semibold">
+                                    <i class="bi bi-pencil-fill me-1 text-success"></i>Message
+                                </label>
+                                <textarea asp-for="Message" class="form-control rounded-3 shadow-sm" rows="6" placeholder="Type your message..."></textarea>
+                                <span asp-validation-for="Message" class="text-danger"></span>
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm px-4">
+                                    <i class="bi bi-send-fill me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: Contact Info -->
+            <div class="col-lg-6 col-md-12">
+                <div class="card contact-info shadow-lg border-0 rounded-4 h-100 p-4 text-white">
+                    <div class="card-body">
+                        <h3 class="fw-bold mb-3">
+                            <i class="bi bi-telephone-forward-fill me-2"></i>Contact Information
+                        </h3>
+                        <p class="text-light mb-4">Reach out to our team directly using the following details.</p>
+
+                        <div class="info-item mb-3">
+                            <i class="bi bi-person-circle me-2 fs-5"></i>
+                            <strong>Seeramsetti Bhagya Sree</strong><br />
+                            <a href="tel:+916309459210" class="contact-link">📞 6309459210</a><br />
+                            <a href="mailto:bhagya-sree.seeramsetti@capgemini.com?subject=Scholarship%20Query" class="contact-link">✉️ bhagya-sree.seeramsetti@capgemini.com</a>
+                        </div>
+
+                        <div class="info-item mb-3">
+                            <i class="bi bi-person-circle me-2 fs-5"></i>
+                            <strong>Reddypalli Manisha</strong><br />
+                            <a href="tel:+918688433453" class="contact-link">📞 8688433453</a><br />
+                            <a href="mailto:manisha.reddypalli@gmail.com?subject=Scholarship%20Query" class="contact-link">✉️ manisha.reddypalli@gmail.com</a>
+                        </div>
+
+                        <div class="info-item mb-3">
+                            <i class="bi bi-person-circle me-2 fs-5"></i>
+                            <strong>Nandhyala Likhitha</strong><br />
+                            <a href="tel:+916305269973" class="contact-link">📞 6305269973</a><br />
+                            <a href="mailto:likhitha.d.likhitha@capgemini.com?subject=Scholarship%20Query" class="contact-link">✉️ likhitha.d.likhitha@capgemini.com</a>
+                        </div>
+
+                        <hr class="border-light" />
+
+                        <h5 class="fw-bold mb-2"><i class="bi bi-clock-history me-2"></i>Office Hours</h5>
+                        <p class="mb-1">Monday – Friday: 9:30 AM – 6:00 PM</p>
+                        <p class="mb-0">Saturday: 10:00 AM – 2:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card rounded-4 shadow-sm overflow-hidden">
+                    <div class="card-body p-0">
+                        <iframe width="100%"
+                                height="420"
+                                style="border:0;"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                src="https://www.google.com/maps?q=Vijayawada,+Andhra+Pradesh,+India&output=embed">
+                        </iframe>
+                    </div>
+                    <div class="card-footer text-muted small">
+                        <i class="bi bi-geo-alt-fill me-1"></i>Vijayawada, Andhra Pradesh, India
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+        <!-- Leaflet CSS & JS (CDN) -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+              integrity="sha256-sA+e2gk0u6kQf3b0pQ4gk0H1Z3Fz4Y7+Tg/6R9Z+3jM=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-o9N1jv8sVnNQ2p3y8dM32+8yVb1mK7FvKx2F3m0+1QA=" crossorigin=""></script>
+
+        <script>
+            (function() {
+                // Vijayawada coordinates
+                var vijayawadaLat = 16.5062;
+                var vijayawadaLng = 80.6480;
+
+                // Initialize map
+                var map = L.map('vijayawada-map', {
+                    center: [vijayawadaLat, vijayawadaLng],
+                    zoom: 13,
+                    scrollWheelZoom: false, // friendly default for embedded maps
+                    tap: true
+                });
+
+                // OpenStreetMap tile layer
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                // Marker & popup
+                var marker = L.marker([vijayawadaLat, vijayawadaLng]).addTo(map);
+                marker.bindPopup("<strong>Vijayawada</strong><br>Andhra Pradesh, India").openPopup();
+
+            })();
+        </script>
+}
+<style>
+    .contact-wrapper {
+        background: linear-gradient(135deg, #e8f5e9, #d0f0d5);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .contact-card {
+        background-color: #fff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .contact-info {
+        background: linear-gradient(135deg, #198754, #116a45);
+        color: #fff;
+    }
+
+    .contact-link {
+        color: #caffd0;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+        .contact-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+    input, textarea {
+        border: 1px solid #c7e7d0;
+        transition: 0.2s;
+    }
+
+      /* input:focus, textarea:focus {
+            border-color: #198754 !important;
+            box-shadow: 0 0 8px rgba(25, 135, 84, 0.3);
+        } */
+
+    .info-item {
+        line-height: 1.6;
+    }
+
+
+        .map-container {
+            height: 320px; /* default height */
+            min-height: 240px;
+            max-height: 480px;
+        }
+
+        @@media (min-width: 992px) { /* larger screens: taller map */
+            .map-container {
+                height: 420px;
+            }
+        }
+
+        /* Optional small visual polish to match your theme */
+        .card-footer {
+            background: linear-gradient(90deg, rgba(25,135,84,0.06), rgba(25,135,84,0.03));
+</style>

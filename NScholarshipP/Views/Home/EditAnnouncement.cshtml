@@ -1,0 +1,28 @@
+﻿@model NScholarshipP.Models.Announcement
+
+@{
+    ViewData["Title"] = "Edit Announcement";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-3">Edit Announcement</h2>
+
+    <form asp-Controller="Home" asp-action="EditAnnouncement" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Message" class="form-label"></label>
+            <textarea asp-for="Message" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a asp-Controller="Home" asp-action="AnnouncementsAdmin" class="btn btn-secondary">Back</a>
+    </form>
+</div>

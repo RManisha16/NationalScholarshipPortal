@@ -1,0 +1,53 @@
+﻿@model NScholarshipP.Models.Announcement
+
+@{
+    ViewData["Title"] = "Delete Announcement";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center text-danger mb-3">Delete Announcement</h2>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    @if (Model == null)
+    {
+        <div class="alert alert-warning">Announcement not found.</div>
+        <div class="text-center">
+            <a asp-action="AnnouncementsAdmin" class="btn btn-secondary">Back</a>
+        </div>
+    }
+    else
+    {
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3 fw-bold">Title</dt>
+                    <dd class="col-sm-9">@Model.Title</dd>
+
+                    <dt class="col-sm-3 fw-bold">Message</dt>
+                    <dd class="col-sm-9">@Model.Message</dd>
+
+                    <dt class="col-sm-3 fw-bold">Date Posted</dt>
+                    <dd class="col-sm-9">@Model.DatePosted.ToLocalTime().ToString("dd-MMM-yyyy hh:mm tt")</dd>
+
+                    <dt class="col-sm-3 fw-bold">Visible To Public</dt>
+                    <dd class="col-sm-9">@Model.IsPublic ? "Yes" : "No"</dd>
+                </dl>
+            </div>
+        </div>
+
+        <form asp-action="DeleteAnnouncement" method="post" onsubmit="return confirm('Are you sure you want to permanently delete this announcement?');">
+            @* If your controller POST action is named DeleteAnnouncementConfirmed instead, use asp-action="DeleteAnnouncementConfirmed" *@
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-danger px-4 me-3">Yes, Delete</button>
+                <a asp-action="AnnouncementsAdmin" class="btn btn-secondary px-4">Cancel</a>
+            </div>
+        </form>
+    }
+</div>

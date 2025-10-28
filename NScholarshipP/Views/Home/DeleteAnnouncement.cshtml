@@ -1,0 +1,32 @@
+﻿@model NScholarshipP.Models.Announcement
+
+@{
+    ViewData["Title"] = "Delete Announcement";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center text-danger mb-3">Delete Announcement</h2>
+
+    <div class="alert alert-warning">
+        <p>Are you sure you want to delete this announcement?</p>
+    </div>
+
+    <dl class="row">
+        <dt class="col-sm-3">Title</dt>
+        <dd class="col-sm-9">@Model.Title</dd>
+
+        <dt class="col-sm-3">Message</dt>
+        <dd class="col-sm-9">@Model.Message</dd>
+
+        <dt class="col-sm-3">Date</dt>
+        <dd class="col-sm-9">@Model.DatePosted.ToString("dd-MM-yyyy")</dd>
+    </dl>
+    
+    <form asp-action="DeleteAnnouncement" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a asp-action="AnnouncementsAdmin" class="btn btn-secondary px-4">Cancel</a>
+        
+    </form>
+</div>

@@ -1,0 +1,154 @@
+﻿@model IEnumerable<NScholarshipP.Models.StudentApplication>
+
+@{
+    ViewData["Title"] = "Student Applications (Institute)";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e3f2fd, #f5faff);
+        font-family: "Poppins", sans-serif;
+        min-height: 100vh;
+    }
+
+    h3 {
+        font-weight: 700;
+        color: #0d47a1;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-info {
+        text-align: center;
+        color: #6c757d;
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+    }
+
+    table {
+        border-radius: 15px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    th {
+        background: linear-gradient(135deg, #1565c0);
+        color: white !important;
+        font-weight: 600;
+    }
+
+    tbody tr:hover {
+        background-color: #e3f2fd;
+        transition: 0.2s ease-in;
+    }
+
+    .badge {
+        font-size: 0.9rem;
+        border-radius: 10px;
+        padding: 6px 12px;
+    }
+
+    .btn-outline-dark {
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline-dark:hover {
+            background-color: #1565c0;
+            color: white;
+        }
+
+    .alert {
+        border-radius: 12px;
+        font-weight: 500;
+    }
+
+    .back-btn {
+        border-radius: 25px;
+        font-weight: 500;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="container py-4">
+    <div class="mb-3">
+        <a asp-action="Dashboard" class="btn btn-light shadow-sm back-btn">← Back to Dashboard</a>
+    </div>
+
+    <h3 class="text-center mb-3">Student Applications (Institute)</h3>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">@TempData["Error"]</div>
+    }
+
+    <table class="table table-hover text-center align-middle">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Scheme</th>
+                <th>Institute</th>
+                <th>Institute Code</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        No applications found.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                var i = 1;
+                foreach (var app in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@app.StudentName</td>
+                        <td>@app.SchemeName</td>
+                        <td>@app.InstituteName</td>
+                        <td>@app.InstituteCode</td>
+                        <td>@(app.DateSubmitted == default ? "-" : app.DateSubmitted?.ToString("dd-MMM-yyyy"))</td>
+                        <td>
+                            <span class="badge
+                                        @(app.Status == "VerifiedByInstitute" ? "bg-success" :
+                                                                  (app.Status?.StartsWith("Rejected") == true ? "bg-danger" : "bg-warning text-dark"))">
+                        @app.Status
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@app.Id" class="btn btn-sm btn-outline-dark px-3">
+                        View Details
+                    </a>
+                </td>
+            </tr>
+                        i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>

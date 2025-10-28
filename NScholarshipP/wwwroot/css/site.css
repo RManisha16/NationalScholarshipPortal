@@ -1,0 +1,77 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.site-header {
+    border-bottom: 1px solid #e9ecef;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #fff;
+}
+
+.main-heading {
+    color: #2e8b57; /* green */
+    font-size: 2rem; /* increase size (default h1 ~2rem) */
+    font-weight: bold;
+}
+
+.ribbon {
+    background-color: orange; /* green background */
+    color: green; /* text color */
+    font-weight: bold;
+    padding: 8px;
+}
+
+body {
+    background: #f6f7fb;
+    color: #223;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+h2 {
+    color: #2e8b57;
+}
+
+.btn-success {
+    background-color: #2e8b57;
+    border-color: #2e8b57;
+}
+body {
+    background-color: #f8f9fa;
+}
+
+.card, .row {
+    border-radius: 15px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }

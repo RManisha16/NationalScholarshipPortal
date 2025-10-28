@@ -1,0 +1,251 @@
+﻿@model NScholarshipP.Models.InstituteApplication
+
+@{
+    ViewData["Title"] = "Institute Details - State";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e3f2fd, #f5faff);
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+    }
+
+    h2 {
+        color: #0d47a1;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    h5 {
+        font-weight: 600;
+        color: #1565c0;
+        border-left: 5px solid #1565c0;
+        padding-left: 10px;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        backdrop-filter: blur(6px);
+    }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+        }
+
+    .btn {
+        border-radius: 30px;
+        padding: 8px 18px;
+        font-weight: 500;
+    }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+    .alert {
+        border-radius: 10px;
+        font-weight: 500;
+    }
+
+    dl dt {
+        font-weight: 600;
+        color: #333;
+    }
+
+    dl dd {
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    li {
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        display: inline-block;
+        border-radius: 25px;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+    }
+
+    .back-btn {
+        background-color: #f8f9fa;
+        border-radius: 25px;
+        transition: 0.3s;
+    }
+
+        .back-btn:hover {
+            background-color: #1565c0;
+            color: #fff;
+        }
+
+    .badge {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+        border-radius: 10px;
+    }
+
+    .btn-outline-dark {
+        border-radius: 25px;
+    }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+</style>
+
+<div class="container mt-4 mb-5">
+    <h2 class="text-center">Institute Details - @Model.InstituteName</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">@TempData["Error"]</div>
+    }
+
+    <div class="mb-3 ">
+        <a asp-action="InstituteApplications" class="btn back-btn shadow-sm">
+            ← Back to Institute Applications
+        </a>
+    </div>
+
+    <div class="card p-4 mb-4">
+        <div class="card-body">
+            <h5>Institute Information</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Institute Code</dt>
+                <dd class="col-sm-9">@Model.InstituteCode</dd>
+
+                <dt class="col-sm-3">DISE Code</dt>
+                <dd class="col-sm-9">@Model.DISECode</dd>
+
+                <dt class="col-sm-3">District / State</dt>
+                <dd class="col-sm-9">@Model.District / @Model.State</dd>
+
+                <dt class="col-sm-3">Location / Type</dt>
+                <dd class="col-sm-9">@Model.Location / @Model.InstituteType</dd>
+
+                <dt class="col-sm-3">Affiliation</dt>
+                <dd class="col-sm-9">@Model.UniversityBoardName (@Model.AffiliatedUniversityState)</dd>
+
+                <dt class="col-sm-3">Year Admission Started</dt>
+                <dd class="col-sm-9">@Model.YearAdmissionStarted</dd>
+
+                <dt class="col-sm-3">Address</dt>
+                <dd class="col-sm-9">@Model.Address</dd>
+
+                <dt class="col-sm-3">Principal / Contact</dt>
+                <dd class="col-sm-9">
+                    @Model.PrincipalName <br />
+                     Mobile: @Model.MobileNumber 
+                </dd>
+
+                <dt class="col-sm-3">Submitted On</dt>
+                <dd class="col-sm-9">@Model.SubmittedOn.ToLocalTime().ToString("dd-MMM-yyyy hh:mm tt")</dd>
+
+                <dt class="col-sm-3">Status</dt>
+                <dd class="col-sm-9">
+                    @switch (Model.Status)
+                    {
+                        case "Pending":
+                            <span class="badge bg-warning text-dark">Pending</span>
+                            ;
+                            break;
+                        case "VerifiedByState":
+                            <span class="badge bg-info text-dark">Verified</span>
+                            ;
+                            break;
+                        case "ForwardedToMinistry":
+                            <span class="badge bg-primary">Forwarded</span>
+                            ;
+                            break;
+                        case "ApprovedByMinistry":
+                            <span class="badge bg-success">Approved</span>
+                            ;
+                            break;
+                        case "RejectedByState":
+                            <span class="badge bg-danger">Rejected</span>
+                            ;
+                            break;
+                        default:
+                            <span class="badge bg-secondary">@Model.Status</span>
+                            ;
+                            break;
+                    }
+                </dd>
+            </dl>
+
+            <h5>Uploaded Documents</h5>
+            <ul>
+                @if (!string.IsNullOrEmpty(Model.EstablishCertificatePath))
+                {
+                    <li><a href="@Url.Content(Model.EstablishCertificatePath)" target="_blank" class="btn btn-outline-info btn-sm">Establishment Certificate</a></li>
+                }
+                else
+                {
+                    <li><em>Establishment Certificate: Not uploaded</em></li>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.AffiliationCertificatePath))
+                {
+                    <li><a href="@Url.Content(Model.AffiliationCertificatePath)" target="_blank" class="btn btn-outline-info btn-sm">Affiliation Certificate</a></li>
+                }
+                else
+                {
+                    <li><em>Affiliation Certificate: Not uploaded</em></li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        @if (Model.Status != "RejectedByState")
+        {
+            @if (Model.Status != "ForwardedToMinistry" &&
+                    Model.Status != "ApprovedByMinistry" &&
+                    Model.Status != "VerifiedByState")
+            {
+                <form asp-action="ApproveInstitute" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button class="btn btn-success px-4">Approve & Forward (State)</button>
+                </form>
+            }
+
+            <form asp-action="RejectInstitute" method="post" class="d-inline ms-2">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="text" name="reason" placeholder="Reason" class="form-control d-inline-block me-2" style="width:250px;" />
+                <button class="btn btn-danger px-4">Reject</button>
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-secondary mt-3 d-inline-block">
+                <strong>This institute has been rejected.</strong> No further actions can be taken.
+            </div>
+        }
+    </div>
+</div>

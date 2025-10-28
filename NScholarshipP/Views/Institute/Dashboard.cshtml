@@ -1,0 +1,466 @@
+﻿@{
+
+    Layout = null;
+
+    ViewData["Title"] = "Institute Dashboard";
+
+}
+
+
+
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"]</title>
+
+
+
+    <!-- Bootstrap 5 -->
+
+    <link href=https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css rel="stylesheet" />
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css />
+
+
+
+    <style>
+
+        body {
+            background: #f4f7fb;
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+
+
+        .sidebar {
+            background: #1565c0;
+            color: #fff;
+            min-height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 260px;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+
+            .sidebar .profile-section {
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+
+
+            .sidebar .profile-pic {
+                width: 90px;
+                height: 90px;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 3px solid rgba(255,255,255,0.15);
+            }
+
+
+
+            .sidebar .profile-name {
+                font-size: 16px;
+                font-weight: 600;
+                color: #ffffff;
+                margin-top: 10px;
+            }
+
+
+
+            .sidebar .profile-btn {
+                font-size: 13px;
+                color: #00c27f;
+                text-decoration: none;
+            }
+
+
+
+                .sidebar .profile-btn:hover {
+                    text-decoration: underline;
+                }
+
+
+
+            .sidebar .nav-link {
+                color: rgba(255,255,255,0.9);
+                margin-bottom: 5px;
+            }
+
+
+
+                .sidebar .nav-link:hover {
+                    background: rgba(255,255,255,0.07);
+                    color: #fff;
+                    border-radius: 8px;
+                }
+
+
+
+        .content {
+            margin-left: 280px;
+            padding: 28px;
+        }
+
+
+
+        .stat-card {
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(18, 38, 63, 0.06);
+            padding: 18px;
+            background: #fff;
+        }
+
+
+
+            .stat-card h6 {
+                color: #6b7280;
+                margin-bottom: 8px;
+            }
+
+
+
+            .stat-card .value {
+                font-size: 28px;
+                font-weight: 700;
+            }
+
+
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+
+
+        .brand {
+            font-weight: 700;
+            color: #1f6f3d;
+            font-size: 20px;
+        }
+
+
+
+        @@media (max-width: 991px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+
+
+            .content {
+                margin-left: 0;
+                padding: 16px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <!-- LEFT SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+
+        <!-- PROFILE SECTION -->
+
+        <div class="profile-section">
+
+            <img src="~/images/default.jpg" alt="Institute Profile" class="profile-pic" />
+
+            <div class="profile-name">@ViewBag.InstituteName</div>
+
+            <a href="#" data-bs-toggle="modal" data-bs-target="#instituteProfileModal" class="profile-btn">Edit Profile</a>
+
+        </div>
+
+
+
+        <!-- NAVIGATION LINKS -->
+
+        <nav class="nav flex-column px-3">
+
+            <a class="nav-link" href="@Url.Action("Dashboard", "Institute")">
+
+                <i class="fa-solid fa-gauge-high me-2"></i> Dashboard
+
+            </a>
+
+            <a class="nav-link" href="@Url.Action("StudentApplications", "Institute")">
+
+                <i class="fa-solid fa-user-graduate me-2"></i> View Student Applications
+
+            </a>
+
+            <a class="nav-link text-danger fw-bold" href="@Url.Action("Logout", "Institute")" style="color: maroon;">
+
+                <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+
+            </a>
+
+        </nav>
+
+
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <div class="mt-auto text-center p-3 small text-white-50">
+            © @DateTime.Now.Year NSP – Institute Dashboard
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="content">
+
+        <div class="topbar">
+
+            <div>
+                <div class="brand" style="font-size: 30px;">National Scholarship Portal</div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="me-3 text-muted small" style="font-size: 20px;">Welcome, <strong>@ViewBag.InstituteName</strong></div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="container mt-4 dashboard-container">
+
+            <div class="text-center mb-4">
+
+                <h2 class="dashboard-title">Institute Dashboard</h2>
+
+                <p class="text-black mb-1">Academic Year 2025–26</p>
+
+            </div>
+
+
+
+            <div class="row justify-content-center mb-4">
+
+                <div class="col-md-3 col-sm-6 mb-3">
+
+                    <div class="card dashboard-card text-center p-3">
+
+                        <h5 class="text-black">Total Students</h5>
+
+                        <h2 class="fw-bold text-dark">@ViewBag.TotalStudents</h2>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3 col-sm-6 mb-3">
+
+                    <div class="card dashboard-card text-center p-3">
+
+                        <h5 class="text-black">Pending Students</h5>
+
+                        <h2 class="fw-bold text-warning">@ViewBag.PendingStudents</h2>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3 col-sm-6 mb-3">
+
+                    <div class="card dashboard-card text-center p-3">
+
+                        <h5 class="text-black">Total Institutes</h5>
+
+                        <h2 class="fw-bold text-dark">@ViewBag.ForwardedStudents</h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- PROFILE MODAL -->
+
+    <div class="modal fade" id="instituteProfileModal" tabindex="-1" aria-labelledby="instituteProfileLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="instituteProfileLabel">Institute Profile</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <form asp-action="UpdateProfile" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="row mb-2">
+
+                            <div class="col-sm-6">
+
+                                <label>Institute Code</label>
+
+                                <input type="text" name="InstituteCode" class="form-control" value="@ViewBag.InstituteCode" readonly />
+
+                            </div>
+
+                            <div class="col-sm-6">
+
+                                <label>DISE Code</label>
+
+                                <input type="text" name="DiseCode" class="form-control" value="@ViewBag.DiseCode" />
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row mb-2">
+
+                            <div class="col-sm-6">
+
+                                <label>District</label>
+
+                                <input type="text" name="District" class="form-control" value="@ViewBag.District" />
+
+                            </div>
+
+                            <div class="col-sm-6">
+
+                                <label>State</label>
+
+                                <input type="text" name="State" class="form-control" value="@ViewBag.State" />
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="mb-2">
+
+                            <label>University/Board Name</label>
+
+                            <input type="text" name="UniversityName" class="form-control" value="@ViewBag.UniversityName" />
+
+                        </div>
+
+
+
+                        <div class="mb-2">
+
+                            <label>Year Admission Started</label>
+
+                            <input type="number" name="YearAdmissionStarted" class="form-control" value="@ViewBag.YearAdmissionStarted" min="1900" max="2099" required />
+
+                        </div>
+
+
+
+                        <div class="mb-2">
+
+                            <label>Address</label>
+
+                            <input type="text" name="Address" class="form-control" value="@ViewBag.Address" />
+
+                        </div>
+
+
+
+                        <div class="row mb-2">
+
+                            <div class="col-sm-6">
+
+                                <label>Principal Name</label>
+
+                                <input type="text" name="PrincipalName" class="form-control" value="@ViewBag.PrincipalName" />
+
+                            </div>
+
+                            <div class="col-sm-6">
+
+                                <label>Mobile Number</label>
+
+                                <input type="text" name="MobileNumber" class="form-control" value="@ViewBag.Mobile" />
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="text-end">
+
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Bootstrap bundle -->
+
+    <script src=https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js></script>
+
+</body>
+
+</html>

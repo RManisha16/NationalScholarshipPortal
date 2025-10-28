@@ -1,0 +1,131 @@
+﻿@model NScholarshipP.Controllers.MinistryViewModel
+@{
+    ViewData["Title"] = "Ministry Login";
+}
+
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #e3f2fd, #f5faff);
+        min-height: 100vh;
+    }
+
+    .login-container {
+        max-width: 1000px;
+        width: 100%;
+        background: #ffffff;
+        border-radius: 25px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .login-left {
+        padding: 50px;
+        background: white;
+    }
+
+        .login-left h5 {
+            color: #1565c0;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px;
+        border: 1px solid #ced4da;
+    }
+
+        .form-control:focus {
+            border-color: #1565c0;
+            box-shadow: 0 6px 6px rgba(21, 101, 192, 0.3);
+        }
+
+    label {
+        font-weight: 500;
+        color: #0d47a1;
+    }
+
+    .btn-login {
+        background: linear-gradient(135deg, #1565c0, #42a5f5);
+        border: none;
+        color: white;
+        font-weight: 600;
+        border-radius: 12px;
+        padding: 12px;
+    }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #0d47a1, #1e88e5);
+            box-shadow: 0 5px 15px rgba(21, 101, 192, 0.3);
+        }
+
+    .remember-me label {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
+    .login-right img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        filter: brightness(0.95);
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 767px) {
+        .login-left {
+            padding: 30px;
+        }
+
+        .login-right {
+            display: none;
+        }
+    }
+</style>
+
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+    <div class="row login-container">
+        <!-- LEFT SIDE - LOGIN FORM -->
+        <div class="col-md-6 login-left d-flex flex-column justify-content-center">
+            <h5>Ministry Officer Login</h5>
+            <form asp-action="Login" method="post">
+                <div class="form-group mb-3">
+                    <label>Username</label>
+                    <input type="text" name="Username" class="form-control" placeholder="Enter your Username" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Password</label>
+                    <input type="password" name="Password" class="form-control" placeholder="Enter your Password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3 remember-me">
+                    <div>
+                        <input type="checkbox" id="remember" />
+                        <label for="remember" class="ms-1">Remember Me</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-login w-100">Login</button>
+            </form>
+        </div>
+
+        <!-- RIGHT SIDE - IMAGE -->
+        <div class="col-md-6 login-right p-0">
+            <img src="~/images/ministrylogin.jpg" alt="Login Illustration" class="img-fluid" />
+        </div>
+    </div>
+</div>

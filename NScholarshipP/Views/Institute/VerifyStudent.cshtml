@@ -1,0 +1,141 @@
+﻿@model NScholarshipP.Models.StudentApplication
+
+@{
+
+    ViewData["Title"] = "Verify Student Application";
+
+}
+
+
+
+<div class="container mt-4">
+
+    <h3>Verify Student Application</h3>
+
+
+
+    <div class="mb-3">
+
+        <a asp-action="StudentApplications" class="btn btn-secondary">← Back to list</a>
+
+    </div>
+
+
+
+    @if (TempData["Error"] != null)
+
+    {
+
+        <div class="alert alert-danger">@TempData["Error"]</div>
+
+    }
+
+    @if (TempData["Success"] != null)
+
+    {
+
+        <div class="alert alert-success">@TempData["Success"]</div>
+
+    }
+
+
+
+    <div class="card mb-3">
+
+        <div class="card-body">
+
+            <h5 class="card-title">@Model.StudentName</h5>
+
+            <p><strong>Scheme:</strong> @Model.SchemeName</p>
+
+            <p><strong>Course:</strong> @Model.PresentCourse</p>
+
+            <p><strong>Institute:</strong> @Model.InstituteName</p>
+
+            <p><strong>Submitted:</strong> @Model.DateSubmitted?.ToString("dd-MMM-yyyy HH:mm")</p>
+
+            <p><strong>Status:</strong> <span class="badge bg-info">@Model.Status</span></p>
+
+        </div>
+
+    </div>
+
+
+
+    <h5>Uploaded Documents</h5>
+
+    <ul>
+
+        @if (!string.IsNullOrEmpty(Model.PhotoPath))
+
+        {
+
+            <li><a href="@Model.PhotoPath" target="_blank">Photo</a></li>
+
+        }
+
+        @if (!string.IsNullOrEmpty(Model.AadharPath))
+
+        {
+
+            <li><a href="@Model.AadharPath" target="_blank">Aadhar</a></li>
+
+        }
+
+        @if (!string.IsNullOrEmpty(Model.BankPassbookPath))
+
+        {
+
+            <li><a href="@Model.BankPassbookPath" target="_blank">Bank Passbook</a></li>
+
+        }
+
+        @if (!string.IsNullOrEmpty(Model.XMarksheetPath))
+
+        {
+
+            <li><a href="@Model.XMarksheetPath" target="_blank">10th Marksheet</a></li>
+
+        }
+
+        @if (!string.IsNullOrEmpty(Model.XIIMarksheetPath))
+
+        {
+
+            <li><a href="@Model.XIIMarksheetPath" target="_blank">12th Marksheet</a></li>
+
+        }
+
+    </ul>
+
+
+
+    <form asp-action="VerifyStudent" method="post" enctype="multipart/form-data" class="mt-4">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="id" value="@Model.Id" />
+
+
+
+        <div class="mb-3">
+
+            <label class="form-label">Upload Bonafide Certificate (required to forward)</label>
+
+            <input type="file" name="bonafideFile" class="form-control" required />
+
+        </div>
+
+
+
+        <div class="mb-3">
+
+            <button type="submit" name="action" value="verify" class="btn btn-success">Verify & Forward to State</button>
+
+            <button type="submit" name="action" value="reject" class="btn btn-danger ms-2">Reject Application</button>
+
+        </div>
+
+    </form>
+
+</div>

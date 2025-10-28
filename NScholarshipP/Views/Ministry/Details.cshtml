@@ -1,0 +1,73 @@
+﻿@model NScholarshipP.Models.StudentApplication
+@{
+    ViewData["Title"] = "Ministry - Application Details";
+}
+
+<div class="container mt-4">
+    <h3>Application Details</h3>
+
+    <div class="mb-3">
+        <a asp-action="ToReview" class="btn btn-secondary">← Back</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card p-3">
+                <h5>@Model.StudentName</h5>
+                <p><strong>Scheme:</strong> @Model.SchemeName</p>
+                <p><strong>Institute:</strong> @Model.InstituteName</p>
+                <p><strong>State:</strong> @Model.State</p>
+                <p><strong>Submitted:</strong> @Model.DateSubmitted?.ToString("dd-MMM-yyyy")</p>
+
+                <h6 class="mt-3">Student Details</h6>
+                <p><strong>Father:</strong> @Model.FatherName</p>
+                <p><strong>Mother:</strong> @Model.MotherName</p>
+                <p><strong>Course:</strong> @Model.PresentCourse</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <h6>Documents</h6>
+            <ul>
+                @if (!string.IsNullOrEmpty(Model.BonafideCertificatePath))
+                {
+                    <li><a href="@Model.BonafideCertificatePath" target="_blank">Bonafide</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.XMarksheetPath))
+                {
+                    <li><a href="@Model.XMarksheetPath" target="_blank">10th</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.XIIMarksheetPath))
+                {
+                    <li><a href="@Model.XIIMarksheetPath" target="_blank">12th</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.BankPassbookPath))
+                {
+                    <li><a href="@Model.BankPassbookPath" target="_blank">Bank Passbook</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.AadharPath))
+                {
+                    <li><a href="@Model.AadharPath" target="_blank">Aadhar</a></li>
+                }
+            </ul>
+
+            <form asp-action="Approve" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button class="btn btn-success mb-2">Approve Scholarship</button>
+            </form>
+
+            <form asp-action="Reject" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="text" name="reason" placeholder="Reason (optional)" class="form-control mb-2" />
+                <button class="btn btn-danger">Reject</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<NScholarshipP.Models.Announcement>
+
+@{
+    ViewData["Title"] = "Announcements";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Announcements</h2>
+        <a asp-action="CreateAnnouncement" class="btn btn-primary">+ Add New Announcement</a>
+    </div>
+
+    <!-- TempData alerts for success/failure messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Date</th>
+                    <th scope="col" style="width: 220px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var index = 1;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@index</th>
+                        <td>@item.Title</td>
+                        <td style="max-width: 500px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="@item.Message">
+                            @item.Message
+                        </td>
+                        <td>@(item.DatePosted == DateTime.MinValue ? "" : item.DatePosted.ToString("dd-MM-yyyy"))</td>
+                        <td>
+                            <a asp-action="DetailsAnnouncement" asp-route-id="@item.Id" class="btn btn-sm btn-info me-1">View</a>
+                            <a asp-action="EditAnnouncement" asp-route-id="@item.Id" class="btn btn-sm btn-warning me-1">Edit</a>
+
+                            <a asp-action="DeleteAnnouncement" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                            
+                        </td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body text-center">
+                <p class="mb-0">No announcements available. Click <strong>+ Add New Announcement</strong> to create one.</p>
+            </div>
+        </div>
+    }
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

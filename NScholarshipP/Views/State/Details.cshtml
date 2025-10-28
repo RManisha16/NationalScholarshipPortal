@@ -1,0 +1,56 @@
+﻿@model IEnumerable<NScholarshipP.Models.StudentApplication>
+@{
+    ViewData["Title"] = "State - Applications Forwarded by Institutes";
+}
+
+<div class="container mt-4">
+    <h3>Applications Forwarded to State</h3>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <table class="table table-hover mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Scheme</th>
+                <th>Institute</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th style="width:180px">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="7" class="text-center">No applications found.</td></tr>
+            }
+            else
+            {
+                var i = 1;
+                foreach (var app in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@app.StudentName</td>
+                        <td>@app.SchemeName</td>
+                        <td>@app.InstituteName</td>
+                        <td>@app.DateSubmitted?.ToString("dd-MMM-yyyy")</td>
+                        <td><span class="badge bg-primary">@app.Status</span></td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@app.Id" class="btn btn-sm btn-info">View</a>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>

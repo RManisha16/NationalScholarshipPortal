@@ -1,0 +1,54 @@
+﻿@model IEnumerable<NScholarshipP.Models.StudentApplication>
+@{
+    ViewData["Title"] = "Ministry - Applications to Review";
+}
+
+<div class="container mt-4">
+    <h3>Applications Waiting Ministry Review</h3>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <table class="table table-striped table-bordered mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Scheme</th>
+                <th>Institute</th>
+                <th>State</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th style="width:140px">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="text-center">No applications to review.</td></tr>
+            }
+            else
+            {
+                var i = 1;
+                foreach (var app in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@app.StudentName</td>
+                        <td>@app.SchemeName</td>
+                        <td>@app.InstituteName</td>
+                        <td>@app.State</td>
+                        <td>@app.DateSubmitted?.ToString("dd-MMM-yyyy")</td>
+                        <td><span class="badge bg-warning">@app.Status</span></td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@app.Id" class="btn btn-sm btn-primary">View</a>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>

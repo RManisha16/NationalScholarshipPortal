@@ -1,0 +1,354 @@
+﻿@model NScholarshipP.Models.StudentApplication
+
+@{
+    ViewData["Title"] = "Student Application Details";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e3f2fd, #f5faff);
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+    }
+
+    h2 {
+        color: #0d47a1;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    h5 {
+        font-weight: 600;
+        color: #1565c0;
+        border-left: 5px solid #1565c0;
+        padding-left: 10px;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        backdrop-filter: blur(6px);
+    }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+        }
+
+    .btn {
+        border-radius: 30px;
+        padding: 8px 18px;
+        font-weight: 500;
+    }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+    .alert {
+        border-radius: 10px;
+        font-weight: 500;
+    }
+
+    dl dt {
+        font-weight: 600;
+        color: #333;
+    }
+
+    dl dd {
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    li {
+        margin-bottom: 6px;
+    }
+
+    .btn-outline-info {
+        border-radius: 25px;
+    }
+
+    .form-control {
+        display: inline-block;
+        border-radius: 25px;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+    }
+
+    .back-btn {
+        background-color: #f8f9fa;
+        border-radius: 25px;
+        transition: 0.3s;
+    }
+
+        .back-btn:hover {
+            background-color: #1565c0;
+            color: #fff;
+        }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="container mt-4 mb-5">
+    <h2 class="text-center">Application Details - @Model.StudentName</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger text-center">@TempData["ErrorMessage"]</div>
+    }
+
+    <div class="mb-3">
+        <a asp-action="StudentApplications" class="btn back-btn shadow-sm">
+            ← Back to Student Applications
+        </a>
+    </div>
+
+    <div class="card p-4 mb-4">
+        <div class="card-body">
+            <h5>Student Information</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Scholarship</dt>
+                <dd class="col-sm-9">@(!string.IsNullOrEmpty(Model.SchemeName) ? Model.SchemeName : "N/A")</dd>
+
+                <dt class="col-sm-3">Student</dt>
+                <dd class="col-sm-9">@Model.StudentName</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Gender</dt>
+                <dd class="col-sm-9">@Model.Gender</dd>
+
+                <dt class="col-sm-3">Date of Birth</dt>
+                <dd class="col-sm-9">@Model.DateOfBirth?.ToString("dd-MM-yyyy")</dd>
+
+                <dt class="col-sm-3">Mobile Number</dt>
+                <dd class="col-sm-9">@Model.MobileNumber</dd>
+
+                <dt class="col-sm-3">AadharNumber</dt>
+                <dd class="col-sm-9">@Model.AadharNumber</dd>
+
+                <dt class="col-sm-3">Status</dt>
+                <dd class="col-sm-9">
+                    @switch (Model.Status)
+                    {
+                        case "Pending":
+                        case "VerifiedByInstitute":
+                            <span class="badge bg-warning text-dark">Pending</span>
+                            ;
+                            break;
+                        case "ApprovedByState":
+                            <span class="badge bg-success">Approved</span>
+                            ;
+                            break;
+                        case "ForwardedToMinistry":
+                            <span class="badge bg-info text-dark">Forwarded</span>
+                            ;
+                            break;
+                        case "RejectedByState":
+                            <span class="badge bg-danger">Rejected</span>
+                            ;
+                            break;
+                        default:
+                            <span class="badge bg-secondary">@Model.Status</span>
+                            ;
+                            break;
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Submitted On</dt>
+                <dd class="col-sm-9">@Model.DateSubmitted?.ToLocalTime().ToString("dd-MMM-yyyy hh:mm tt")</dd>
+            </dl>
+
+            <h5>Academic Details</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Institute</dt>
+                <dd class="col-sm-9">@Model.InstituteName</dd>
+
+                <dt class="col-sm-3">Institute Code</dt>
+                <dd class="col-sm-9">@Model.InstituteCode</dd>
+
+                <dt class="col-sm-3">Present Course</dt>
+                <dd class="col-sm-9">@Model.PresentCourse</dd>
+
+                <dt class="col-sm-3">Present Course Year</dt>
+                <dd class="col-sm-9">@Model.PresentCourseYear</dd>
+
+                <dt class="col-sm-3">University/Board Name</dt>
+                <dd class="col-sm-9">@Model.UniversityOrBoardName</dd>
+
+                <dt class="col-sm-3">Previous Class Percentage</dt>
+                <dd class="col-sm-9">@Model.PreviousClassPercentage</dd>
+
+                <dt class="col-sm-3">10th Roll Number</dt>
+                <dd class="col-sm-9">@Model.X_RollNumber</dd>
+
+                <dt class="col-sm-3">10th Board Name</dt>
+                <dd class="col-sm-9">@Model.X_BoardName</dd>
+
+                <dt class="col-sm-3">10th Passing Year</dt>
+                <dd class="col-sm-9">@Model.X_PassingYear</dd>
+
+                <dt class="col-sm-3">10th Percentage</dt>
+                <dd class="col-sm-9">@Model.X_Percentage</dd>
+
+                <dt class="col-sm-3">12th/Diploma Roll Number</dt>
+                <dd class="col-sm-9">@Model.XII_RollNumber</dd>
+
+                <dt class="col-sm-3">12th/Diploma Board Name</dt>
+                <dd class="col-sm-9">@Model.XII_BoardName</dd>
+
+                <dt class="col-sm-3">12th/Diploma Passing Year</dt>
+                <dd class="col-sm-9">@Model.XII_PassingYear</dd>
+
+                <dt class="col-sm-3">12th/Diploma Percentage</dt>
+                <dd class="col-sm-9">@Model.XII_Percentage</dd>
+            </dl>
+
+
+            <h5>Fee Details</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Admission Fee</dt>
+                <dd class="col-sm-9">@Model.AdmissionFee</dd>
+
+                <dt class="col-sm-3">Tuition Fee</dt>
+                <dd class="col-sm-9">@Model.TuitionFee</dd>
+
+                <dt class="col-sm-3">Other Fee</dt>
+                <dd class="col-sm-9">@Model.OtherFee</dd>
+            </dl>
+
+            <h5>Family Details</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Father Name</dt>
+                <dd class="col-sm-9">@Model.FatherName</dd>
+
+                <dt class="col-sm-3">Mother Name</dt>
+                <dd class="col-sm-9">@Model.MotherName</dd>
+
+                <dt class="col-sm-3">Guardian Name</dt>
+                <dd class="col-sm-9">@Model.GuardianName</dd>
+
+                <dt class="col-sm-3">Family Annual Income</dt>
+                <dd class="col-sm-9">@Model.FamilyAnnualIncome</dd>
+
+                <dt class="col-sm-3">Parent Profession</dt>
+                <dd class="col-sm-9">@Model.ParentsProfession</dd>
+
+                <dt class="col-sm-3">No Of Siblings</dt>
+                <dd class="col-sm-9">@Model.NoOfSiblings</dd>
+
+                <dt class="col-sm-3">Disable</dt>
+                <dd class="col-sm-9">@(Model.IsDisabled == true ? "Yes" : "No")</dd>
+
+                <dt class="col-sm-3">Disable Type</dt>
+                <dd class="col-sm-9">@Model.DisabilityType</dd>
+
+                <dt class="col-sm-3">Disablility Percent</dt>
+                <dd class="col-sm-9">@Model.DisabilityPercent</dd>
+
+                <dt class="col-sm-3">Marital Status</dt>
+                <dd class="col-sm-9">@Model.MaritalStatus</dd>
+            </dl>
+
+            <h5>Bank Details</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Bank Name</dt>
+                <dd class="col-sm-9">@Model.BankName</dd>
+
+                <dt class="col-sm-3">IFSC Code</dt>
+                <dd class="col-sm-9">@Model.IFSCCode</dd>
+
+                <dt class="col-sm-3">Bank Account</dt>
+                <dd class="col-sm-9">@Model.BankAccount</dd>
+            </dl>
+
+            <h5>Uploaded Documents</h5>
+            <ul>
+                @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                {
+                    <li><a href="@Model.PhotoPath" target="_blank">Student Photo</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.InstituteIdCardPath))
+                {
+                    <li><a href="@Model.InstituteIdCardPath" target="_blank">Institute ID Card</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.CasteIncomeCertificatePath))
+                {
+                    <li><a href="@Model.CasteIncomeCertificatePath" target="_blank">Caste/Income Certificate</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.PreviousMarksheetPath))
+                {
+                    <li><a href="@Model.PreviousMarksheetPath" target="_blank">Previous Marksheet</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.FeeReceiptPath))
+                {
+                    <li><a href="@Model.FeeReceiptPath" target="_blank">Fee Receipt</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.BankPassbookPath))
+                {
+                    <li><a href="@Model.BankPassbookPath" target="_blank">Bank Passbook</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.AadharPath))
+                {
+                    <li><a href="@Model.AadharPath" target="_blank">Aadhar Card</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.XMarksheetPath))
+                {
+                    <li><a href="@Model.XMarksheetPath" target="_blank">10th Marksheet</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.XIIMarksheetPath))
+                {
+                    <li><a href="@Model.XIIMarksheetPath" target="_blank">12th Marksheet</a></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.BonafideCertificatePath))
+                {
+                    <li><a href="@Model.BonafideCertificatePath" target="_blank">Bonafide Certificate</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        @if (Model.Status == "VerifiedByInstitute" || Model.Status == "Submitted")
+        {
+            <form asp-action="VerifyStudent" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-success px-4">Approve & Forward</button>
+            </form>
+
+            <form asp-action="Reject" method="post" class="d-inline ms-2">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="text" name="reason" placeholder="Reason" class="form-control d-inline-block me-2" style="width:250px;" />
+                <button type="submit" class="btn btn-danger px-4">Reject</button>
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-info shadow-sm d-inline-block px-4 py-2">
+                Action Completed: @Model.Status
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,379 @@
+﻿@model List<NScholarshipP.Models.Announcement>
+@using System.Linq
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>NSPORTAL - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+        /* Global page style */
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(180deg, #f7f9fc 0%, #eef6fb 100%);
+        }
+
+        /* Scrolling banner */
+
+        .top-ribbon {
+            background: linear-gradient(90deg,#054a91,#0b6fb2);
+            color: white;
+            overflow: hidden;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(5,74,145,0.2);
+        }
+
+        .ribbon-text {
+            display: inline-block;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: 0.6px;
+            animation: scrollLeft 16s linear infinite;
+            padding-left: 100%;
+        }
+
+        @@keyframes scrollLeft {
+
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .top-ribbon:hover .ribbon-text {
+            animation-play-state: paused;
+        }
+
+        /* Hero container */
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .hero {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-left {
+            flex: 1 1 520px;
+            background: #fff;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 24px rgba(12,80,130,0.06);
+        }
+
+            .hero-left h1 {
+                margin: 0;
+                font-size: 28px;
+                color: #043d6b;
+            }
+
+            .hero-left .sub {
+                color: #1167a0;
+                font-weight: 600;
+            }
+
+            .hero-left p {
+                color: #2a5b7f;
+                margin-top: 8px;
+                line-height: 1.5;
+            }
+
+        .hero-right {
+            flex: 1 1 300px;
+            height: 220px;
+            border-radius: 14px;
+            background-image: radial-gradient(circle at 20% 20%, #ffd59a, transparent 10%), radial-gradient(circle at 80% 80%, #ff9fb1, transparent 10%), linear-gradient(180deg,#fef6ea, #fff);
+            box-shadow: 0 8px 24px rgba(20,60,90,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #1b3c5b;
+        }
+
+        /* Tiles grid */
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .portal-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 16px;
+            color: #1b3c;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+            /* Subtle overlay shine */
+
+            .portal-card::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -50%;
+                width: 50%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.2);
+                transform: skewX(-20deg);
+                transition: left 0.4s ease;
+            }
+
+            .portal-card:hover::after {
+                left: 120%;
+            }
+
+            .portal-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            }
+
+        /* Title and description styling */
+
+        .label {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .desc {
+            font-size: 14px;
+            max-width: 240px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        /* Card colors */
+
+        .card-student {
+            background: linear-gradient(135deg, #2b72c5, #054a91);
+        }
+
+        .card-institution {
+            background: linear-gradient(135deg, #6c5cff, #4e3bff);
+        }
+
+        .card-officer {
+            background: linear-gradient(135deg, #1b9aaa, #107f91);
+        }
+
+        .card-public {
+            background: linear-gradient(135deg, #2ca25f, #1b7d45);
+        }
+
+
+        /* Labels and Description */
+
+        .label {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+        }
+
+        /* Specific Card Colors */
+
+        .card-student .icon-box {
+            background: linear-gradient(135deg, #ff4d70, #ff7b9a);
+        }
+
+        .card-institution .icon-box {
+            background: linear-gradient(135deg, #4e3bff, #7a66ff);
+        }
+
+        .card-officer .icon-box {
+            background: linear-gradient(135deg, #2aa7c1, #46c6d6);
+        }
+
+        .card-public .icon-box {
+            background: linear-gradient(135deg, #20b36a, #3ad29f);
+        }
+
+        /* Card background gradients */
+
+        .card-student {
+            background: linear-gradient(135deg,#ff7b9a,#ff4d70);
+        }
+
+        .card-institution {
+            background: linear-gradient(135deg,#6c5cff,#4e3bff);
+        }
+
+        .card-officer {
+            background: linear-gradient(135deg,#46c6d6,#2aa7c1);
+        }
+
+        .card-public {
+            background: linear-gradient(135deg,#3ad29f,#20b36a);
+        }
+
+        .portal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+        }
+
+
+        /* Quick links */
+
+        .quick-links {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+            .quick-links a {
+                background: white;
+                padding: 10px 14px;
+                border-radius: 999px;
+                font-weight: 600;
+                color: #2a5b7f;
+                box-shadow: 0 6px 16px rgba(12,80,130,0.04);
+                text-decoration: none;
+            }
+
+        
+
+        .academic-year {
+            color: #000 !important;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <!-- Scrolling Banner -->
+    <div class="ribbon">
+        <div class="ribbon-text">
+            NATIONAL SCHOLARSHIP PORTAL (NSP) • Academic Year 2025-26 — Every Student Matters — Apply Now
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <!-- Left -->
+            <div class="hero-left">
+                <p class="mb-0 bold text-black fw-bold" style="font-size: 20px;">
+                    Welcome to the NSP. Choose the section below to Log in or Register:
+                    <strong style="color: #ff4d70">Students </strong>, <strong style="color: #7a66ff">Institutions </strong>, <strong style="color: #2aa7c1">State Officer</strong> and <strong style="color: #20b36a">Ministry </strong>.
+                </p>
+
+                <div class="card-grid">
+                    <a asp-controller="Student" asp-action="Login" class="portal-card card-student">
+                        <h3 class="label">Students</h3>
+                        <p class="mb-0 bold text-black">Login,Register, Apply and Track your scholarship applications.</p>
+                    </a>
+
+                    <a asp-controller="Institute" asp-action="Login" class="portal-card card-institution">
+                        <h3 class="label">Institutions</h3>
+                        <p class="mb-0 bold text-black">Login,Register, Apply and Track the application, Verify student details and Manage institute approvals.</p>
+                    </a>
+
+                    <a asp-controller="State" asp-action="Login" class="portal-card card-officer">
+                        <h3 class="label">State Officer</h3>
+                        <p class="mb-0 bold text-black">Login,Review and approve institution-level Applications,Students scholarship submissions.</p>
+                    </a>
+
+                    <a asp-controller="Ministry" asp-action="Login" class="portal-card card-public">
+                        <h3 class="label">Ministry</h3>
+                        <p class="mb-0 bold text-black">Login,Monitor and manage scholarships,Institute Applications at the national level.</p>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <hr class="my-4" />
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">For More Information</h3>
+        <p class="mb-1 bold text-black">Click on <strong>download PDF</strong> to view the brochure</p>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="info-card p-3 h-100">
+                <h5 class="info-title">
+                    Post Matric Scholarship scheme
+                </h5>
+                <a class="btn btn-outline-primary btn-sm" href="~/files/Post Matric Scholarship.pdf" download><strong>Download PDF</strong></a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-card p-3 h-100">
+                <h5 class="info-title">
+                    National Merit Scholarship scheme
+                </h5>
+                <a class="btn btn-outline-primary btn-sm" href="~/files/National Merit Scholarship 1.pdf" download><strong>Download PDF</strong></a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-card p-3 h-100">
+                <h5 class="info-title">
+                    Central Scholarship Scheme
+                </h5>
+                <a class="btn btn-outline-primary btn-sm" href="~/files/Central Scholarship 1.pdf" download><strong>Download PDF</strong></a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-card p-3 h-100">
+                <h5 class="info-title">
+                    Pragati Scholarship
+                </h5>
+                <a class="btn btn-outline-primary btn-sm" href="~/files/Pragati Scholarship 1.pdf" download><strong>Download PDF</strong></a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-card p-3 h-100">
+                <h5 class="info-title">
+                    National Scholarship Talent Exam
+                </h5>
+                <a class="btn btn-outline-primary btn-sm" href="~/files/NSTSE.pdf" download><strong>Download PDF</strong></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-image mt-0">
+        <img src="~/images/HomepageBanner.jpg"
+             alt="Info"
+             class="img-fluid w-100"
+             style="margin-bottom:-5px; object-fit:cover;">
+    </div>
+</body>
+</html>

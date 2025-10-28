@@ -1,0 +1,208 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - NSPortal</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        html, body {
+            overflow-x: hidden !important;
+            height: 100%;
+            margin: 0;
+        }
+
+        body{
+            display: flex;
+            flex-direction: column;
+        }
+
+        main{
+            flex:1;
+        }
+
+        footer{
+            margin-top: auto;
+        }
+
+        footer{
+            padding: 8px 0;
+        }
+        /* Make sure no element exceeds the viewport width */
+        * {
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        /* Adjust the header container to fit within the screen */
+        .site-header .container {
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+
+        /* Ensure images don’t cause scroll */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+
+        /* Academic Year Styling */
+        .academic-year {
+            font-size: 1.1rem;
+            color: #0d47a1;
+            font-weight: 500;
+            text-align: center;
+            margin-top: -5px;
+            letter-spacing: 0.5px;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        .header-title {
+            text-align: center;
+            font-weight: 700;
+            color: #1565c0;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e3f2fd, #f5faff);
+            padding: 15px 0;
+            border-bottom: 0.5px solid #64b5f6;
+        }
+
+        .site-header {
+            border-bottom: 1px solid #dcdcdc !important;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header bg-white shadow-sm border-bottom">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center py-2">
+            <!-- LEFT: Logo + Title -->
+            <div class="d-flex align-items-center flex-grow-1">
+                <img src="~/images/andhra-gov-logo.jpg" alt="NSP Logo"
+                     style="height: 150px; width: auto; margin-right: 15px;" />
+
+                <div class="text-start">
+                    <h3 class="fw-bold mb-1" style="font-size: 38px; color: green;">
+                        National Scholarship Portal
+                    </h3>
+                    <p class="m-0 text-dark fw-bold" style="font-size: 18px; text-align: center;">
+                        Academic Year 2025–26
+                    </p>
+                </div>
+            </div>
+
+            <!-- RIGHT: Navigation Buttons -->
+            <nav class="d-flex flex-wrap justify-content-end align-items-center gap-2 mt-3 mt-md-0">
+                <a href="/Home/Index" class="btn btn-outline-primary btn-sm fw-bold px-3 py-1 rounded-pill">
+                    Home
+                </a>
+                <a asp-controller="Home" asp-action="AnnouncementsPublic"
+                   class="btn btn-outline-success btn-sm fw-bold px-3 py-1 rounded-pill">
+                    Announcements
+                </a>
+                <a href="/Home/FAQ" class="btn btn-outline-warning btn-sm fw-bold px-3 py-1 rounded-pill">
+                    FAQ
+                </a>
+                <a href="/Home/Contact" class="btn btn-outline-dark btn-sm fw-bold px-3 py-1 rounded-pill">
+                    Contact Us
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main role="main" class="container py-4">
+        @RenderBody()
+    </main>
+    @if (HttpContextAccessor.HttpContext.Session.GetString("IsAdmin") == "true")
+    {
+       
+            <div class="d-flex justify-content-between mb-3">
+            <a class="nav-link text-danger" asp-controller="Home" asp-action="Logout">Logout</a>
+            </div>
+       
+    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+    @await Html.PartialAsync("_ChatbotPartial")
+
+
+
+    <!-- ====== FOOTER (Green Gradient) ====== -->
+    @{
+        // Get current controller and action
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+        // List of pages where footer should NOT appear
+        var hideFooterPages = new[] {
+        "Student", "Institute", "State", "Ministry", "Admin" // you can add more if needed
+        };
+
+        bool shouldHideFooter = hideFooterPages.Contains(currentController);
+    }
+
+    @if (!shouldHideFooter)
+    {
+        <footer class="footer text-white py-4 mt-5" style="background: linear-gradient(90deg, #0f5132, #10b981);">
+            <div class="container text-center text-md-start">
+                <div class="row">
+                    <!-- Left column -->
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 20px;">National Scholarship Portal</h6>
+                        <p class="small mb-0 text-light" style="font-size: 17px;">
+                            Enabling students to achieve their educational goals through government scholarship programs.
+                        </p>
+                    </div>
+
+                    <!-- Center column -->
+                    <div class="col-md-4 mb-3 mb-md-0 text-center">
+                        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 20px;">Quick Links</h6>
+                        <ul class="list-unstyled small mb-0" style="font-size: 17px;">
+                            <li><a href="/Home/Announcements" class="text-white text-decoration-none d-block mb-1">Announcements</a></li>
+                            <li><a href="/Home/FAQ" class="text-white text-decoration-none d-block mb-1">FAQ</a></li>
+                            <li><a href="/Home/Helpdesk" class="text-white text-decoration-none d-block">Helpdesk</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Right column (Address) -->
+                    <div class="col-md-4 text-md-end text-center">
+                        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 20px;">Address</h6>
+                        <p class="small mb-1" style="font-size: 17px;">
+                            <i class="bi bi-geo-alt-fill"></i> National Scholarship Portal Office<br>
+                            Block No. 12, 2nd Floor, Kendriya Sadan,<br>
+                            Sultan Bazar, Vijayawada – 520002,<br>
+                            Andhra Pradesh, India
+                        </p>
+                    </div>
+                </div>
+                <hr class="border-light my-3">
+                <div class="text-center small text-light" style="font-size: 16px;">
+                    © @DateTime.Now.Year National Scholarship Portal — All Rights Reserved
+                </div>
+            </div>
+        </footer>
+    }
+</body>
+</html>
